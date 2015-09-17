@@ -34,7 +34,7 @@ T printObject(std::string name, uint16_t index, uint8_t sub_index, T type_dummy,
 
 void printEposHardwareSettings() {
    std::cout << "epos parameters supported by epos_hardware:\n";
-   
+
    {int8_t temp = printObject("operation_mode_value", 0x6061, 0x00, int8_t());
    std::cout << "\toperation_mode: " << ((temp == OMD_PROFILE_POSITION_MODE) ? "\'profile_position\'" : ((temp == OMD_PROFILE_VELOCITY_MODE) ? "\'profile_velocity\'" : "mode is not supported by epos_hardware")) << "\n";}
 
@@ -140,7 +140,6 @@ void printAdditionalSettings() {
 int main(int argc, char** argv){
 
    uint64_t serial_number;
-   unsigned int lastEpos2ErrorCode;
 
    if(argc == 2){
       if(!SerialNumberFromHex(argv[1], &serial_number)) {

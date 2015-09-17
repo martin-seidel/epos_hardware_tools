@@ -135,6 +135,7 @@ include_directories(
 # add_executable(epos_hardware_tools_node src/epos_hardware_tools_node.cpp)
 
 add_executable(get_settings src/epos_get_settings.cpp)
+add_executable(set_param src/epos_set_param.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -146,6 +147,7 @@ add_executable(get_settings src/epos_get_settings.cpp)
 # )
 
 target_link_libraries(get_settings ${catkin_LIBRARIES})
+target_link_libraries(set_param ${catkin_LIBRARIES})
 
 #############
 ## Install ##
