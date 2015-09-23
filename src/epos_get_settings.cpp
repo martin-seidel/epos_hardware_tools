@@ -28,7 +28,12 @@ T printObject(std::string name, NodeHandlePtr handle, uint16_t index, uint8_t su
       printEpos2Error();
    } else {
       if (print) {//testen scale value
-         std::cout << "\t\t" << name << ": " << (( fabs(scale - 1) < 0.001 ) ? value : (double) value * scale) << "\n";}
+         if (fabs(scale - 1) < 0.001) {
+            std::cout << "\t\t" << name << ": " << value << "\n";
+         } else {
+            std::cout << "\t\t" << name << ": " << (double) value * scale << "\n";
+         }
+      }
    }
 
    return value;
@@ -221,27 +226,30 @@ bool printSingleObject(uint16_t index, uint8_t sub_index, bool is_signed, int bi
    for (NodeHandlePtr handle : handles) {
       bool success = false;
 
+      std::ostringstream text;
+      text << "parameter on node " << (int) getObject(handle, 0x2000, 0x00, uint8_t()) << " (serial: " << std::hex << getObject(handle, 0x2004, 0x00, uint64_t()) << ")";
+
       if (is_signed) {
          switch (bits) {
-            case 8: success = printObject("your parameter", handle, index, sub_index, int8_t());
+            case 8: success = printObject(text.str().c_str(), handle, index, sub_index, int8_t());
             break;
-            case 16: success = printObject("your parameter", handle, index, sub_index, int16_t());
+            case 16: success = printObject(text.str().c_str(), handle, index, sub_index, int16_t());
             break;
-            case 32: success = printObject("your parameter", handle, index, sub_index, int32_t());
+            case 32: success = printObject(text.str().c_str(), handle, index, sub_index, int32_t());
             break;
-            case 64: success = printObject("your parameter", handle, index, sub_index, int64_t());
+            case 64: success = printObject(text.str().c_str(), handle, index, sub_index, int64_t());
             break;
             default: ROS_FATAL("datatype not valid.\nsupported datatypes: int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t");
          }
       } else {
          switch (bits) {
-            case 8: success = printObject("your parameter", handle, index, sub_index, uint8_t());
+            case 8: success = printObject(text.str().c_str(), handle, index, sub_index, uint8_t());
             break;
-            case 16: success = printObject("your parameter", handle, index, sub_index, uint16_t());
+            case 16: success = printObject(text.str().c_str(), handle, index, sub_index, uint16_t());
             break;
-            case 32: success = printObject("your parameter", handle, index, sub_index, uint32_t());
+            case 32: success = printObject(text.str().c_str(), handle, index, sub_index, uint32_t());
             break;
-            case 64: success = printObject("your parameter", handle, index, sub_index, uint64_t());
+            case 64: success = printObject(text.str().c_str(), handle, index, sub_index, uint64_t());
             break;
             default: ROS_FATAL("datatype not valid.\nsupported datatypes: int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t");
          }
@@ -258,7 +266,7 @@ int main(int argc, char** argv){
 
       std::string param1 = argv[1];
 
-      if( param1.compare(0,1,"*") == 0 ) {//geht noch nicht ... :-(I
+      if( param1.compare("?") == 0 ) {
          if ( !getDevices() ) { return 1;}
          //std::cout << "\n";
       } else {
@@ -272,7 +280,7 @@ int main(int argc, char** argv){
                return 1;
             }
          } else {
-            ROS_ERROR("Expected a serial number");
+            ROS_ERROR("expected a serial number or a '?' as first parameter");
             return 1;
          }
       }

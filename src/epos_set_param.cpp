@@ -31,7 +31,7 @@ bool setObject(uint16_t index, uint8_t sub_index, T value) {
          return false;
       } else {
          return true;
-      }     
+      }
    }
 }
 
@@ -104,7 +104,7 @@ int main(int argc, char** argv){
                   break;
                   case 64: success = setObject(index, sub_index, (uint64_t) value);
                   break;
-                  default: ROS_FATAL("datatype not valid.\nsupported datatypes: int8_t, int16_t, int32_t, uint8_t, uint16_t, uint32_t, uint64_t");
+                  default: ROS_FATAL("datatype not valid.\nsupported datatypes: int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t");
                }
             }
          }
