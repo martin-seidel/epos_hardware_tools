@@ -29,7 +29,15 @@ T printObject(std::string name, NodeHandlePtr handle, uint16_t index, uint8_t su
    } else {
       if (print) {//testen scale value
          if (fabs(scale - 1) < 0.001) {
-            std::cout << "\t\t" << name << ": " << value << "\n";
+            if (sizeof(T) == 1) {
+               if (std::numeric_limits<T>::is_signed) {
+                  std::cout << "\t\t" << name << ": " << static_cast<int>(value) << "\n";
+               } else {
+                  std::cout << "\t\t" << name << ": " << static_cast<unsigned int>(value) << "\n";
+               }
+            } else {
+               std::cout << "\t\t" << name << ": " << value << "\n";
+            }
          } else {
             std::cout << "\t\t" << name << ": " << (double) value * scale << "\n";
          }
